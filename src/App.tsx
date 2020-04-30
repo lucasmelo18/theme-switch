@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { ThemeProvider, DefaultTheme } from "styled-components";
+import usePeristedState from "./hooks/usePersistedState";
 
-function App() {
+import light from "./styles/themes/light";
+import dark from "./styles/themes/dark";
+
+import GlobalStyle from "./styles/global";
+import Header from "./components/Header/Header";
+
+const App = () => {
+  const [theme, setTheme] = usePeristedState<DefaultTheme>("theme", light);
+
+  const handleTheme = () => setTheme(theme.title === "light" ? dark : light);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <GlobalStyle />
+        <Header handleTheme={handleTheme} />
+      </div>
+    </ThemeProvider>
   );
-}
+};
 
 export default App;
